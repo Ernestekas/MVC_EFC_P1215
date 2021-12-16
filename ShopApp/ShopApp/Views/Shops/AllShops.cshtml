@@ -1,0 +1,13 @@
+﻿@model List<Shop>
+
+<table class="table">
+    <tr>
+        <th>Select a shop: </th>
+    </tr>
+    @foreach(var shop in @Model)
+    {
+        <tr>
+            <td>@Html.ActionLink(@shop.Name, "GoToShop", "Shops", shop)</td>
+        </tr>
+    }
+</table>

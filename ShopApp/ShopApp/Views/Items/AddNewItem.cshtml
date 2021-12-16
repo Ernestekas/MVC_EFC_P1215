@@ -1,0 +1,19 @@
+﻿@model ShopItem
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Expiry Date</th>
+        <th>Shop Id</th>
+        <th></th>
+    </tr>
+    @using (Html.BeginForm("SubmitNewItem", "Items", FormMethod.Post))
+    {
+    <tr>
+        <td>@Html.TextBoxFor(c => c.Name)</td>
+        <td>@Html.TextBoxFor(c => c.ExpiryDate)</td>
+        <td><input type="number" name="shopId"/></td>
+        <td><input type = "submit" value = "submit" /></td>
+    </tr>
+    }
+</table>

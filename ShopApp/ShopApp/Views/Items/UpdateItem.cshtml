@@ -1,0 +1,23 @@
+﻿@model ShopItem
+
+@using (Html.BeginForm("SubmitUpdate", "Items", FormMethod.Post))
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Expiry date</th>
+            <th>Shop Id</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>@Html.TextBoxFor(s => s.Id, new {@readonly = "readonly"})</td>
+            <td>@Html.TextBoxFor(s => s.Name)</td>
+            <td>@Html.TextBoxFor(s => s.ExpiryDate)</td>
+            <td><input type="number" name = "shopId" value=@Model.Shop.Id/></td>
+            <td><input type="submit" value="Update"/></td>
+        </tr>
+    </table>
+    
+    
+}

@@ -1,0 +1,31 @@
+﻿@model List<ShopItem>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Expiry date</th>
+        <th>Shop</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach(var item in @Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.ExpiryDate</td>
+            @if(@item.Shop == null)
+            {
+                <td>N/A</td>
+            }
+            else
+            {
+                <td>@item.Shop.Name</td>
+            }
+            <td>@Html.ActionLink("Delete", "DeleteItem", "Items", item) |
+                @Html.ActionLink("Update", "UpdateItem", "Items", item)</td>
+        </tr>
+    }
+
+</table>
