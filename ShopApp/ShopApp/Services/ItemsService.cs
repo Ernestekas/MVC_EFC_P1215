@@ -19,39 +19,48 @@ namespace ShopApp.Services
         {
             return _context.ShopItems.Include(x => x.Shop).ToList();
         }
-        public void SubmitNewItemToDb(ShopItem model, string shopId)
+
+        public void SubmitDataAndUpdateDb(ShopItem model, string shopId, bool updatingCurrentData = false)
         {
-            if(string.IsNullOrWhiteSpace(model.Name))
+            ShopItem selected = model;
+            Shop shop = _context.Shops.FirstOrDefault(s => s.Id == int.Parse(shopId));
+
+            if (updatingCurrentData)
+            {
+                selected = _context.ShopItems.FirstOrDefault(m => m.Id == selected.Id);
+                selected.Name = model.Name;
+            }
+
+            if(string.IsNullOrWhiteSpace(selected.Name) || (updatingCurrentData && shop == null))
             {
                 throw new Exception();
             }
-
-            Shop shop = _context.Shops.FirstOrDefault(s => s.Id == int.Parse(shopId));
-
-            if(shop != null)
-            {
-                model.Shop = shop;
-            }
-            
-            _context.ShopItems.Add(model);
-            _context.SaveChanges();
-        }
-
-        public void SubmitUpdateItemToDb(ShopItem model, string shopId)
-        {
-            ShopItem selected = _context.ShopItems.FirstOrDefault(m => m.Id == model.Id);
-
-            if(string.IsNullOrWhiteSpace(model.Name))
-            {
-                throw new Exception();
-            }
-            
-            Shop shop = _context.Shops.FirstOrDefault(s => s.Id == int.Parse(shopId));
             
             if(shop != null)
             {
                 selected.Shop = shop;
             }
+            
+            if(!updatingCurrentData)
+            {
+                _context.ShopItems.Add(selected);
+            }
+            else
+            {
+                _context.Attach(selected);
+                _context.Entry(selected).State = EntityState.Modified;
+            }
+            _context.SaveChanges();
+        }
+
+        public ShopItem GetItem(ShopItem model)
+        {
+            return _context.ShopItems.Include(s => s.Shop).FirstOrDefault(m => m.Id == model.Id);
+        }
+
+        public void DeleteItem(ShopItem model)
+        {
+            _context.ShopItems.Remove(model);
             _context.SaveChanges();
         }
     }

@@ -27,7 +27,7 @@ namespace ShopApp.Controllers
         {
             try
             {
-                _itemsService.SubmitNewItemToDb(model, shopId);
+                _itemsService.SubmitDataAndUpdateDb(model, shopId);
                 return RedirectToAction("AllItems");
             }
             catch
@@ -37,9 +37,26 @@ namespace ShopApp.Controllers
         }
         public IActionResult UpdateItem(ShopItem model)
         {
-            //_itemsService.SubmitUpdateItemToDb(model, shopId);
-            Shop test = model.Shop;
-            return View(model);
+            return View(_itemsService.GetItem(model));
+        }
+
+        public IActionResult SubmitUpdate(ShopItem model, string shopId)
+        {
+            try
+            {
+                _itemsService.SubmitDataAndUpdateDb(model, shopId, true);
+                return RedirectToAction("AllItems");
+            }
+            catch
+            {
+                return RedirectToAction("UpdateItem", model);
+            }
+        }
+
+        public IActionResult DeleteItem(ShopItem model)
+        {
+            _itemsService.DeleteItem(model);
+            return RedirectToAction("AllItems");
         }
     }
 }
