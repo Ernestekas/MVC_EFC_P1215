@@ -16,14 +16,17 @@
             <td>@Html.TextBoxFor(s => s.ExpiryDate)</td>
             @if(@Model.Shop != null)
             {
-                <td><input type="number" name="shopId" value="@Model.Shop.Id"/></td>
+                <td><input type="number" name="shopId" value="@Model.Shop.Id"/>
+                    <input type="hidden" name="oldShopId" value="@Model.Shop.Id"/>
+                    </td>
+
             }
             else
             {
                 <td><input type="number" name="shopId" value=""/></td>
             }
-            <td><input type="hidden" name="fromShop" value="@ViewBag.FromShop"/></td>
-            <td><input type="submit" value="Update"/></td>
+            <td><input type="hidden" name="fromShop" value="@ViewBag.FromShop"/>
+                <input type="submit" value="Update"/></td>
         </tr>
     </table>
     

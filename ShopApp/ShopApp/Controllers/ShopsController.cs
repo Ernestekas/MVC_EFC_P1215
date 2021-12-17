@@ -38,14 +38,13 @@ namespace ShopApp.Controllers
             return View(_itemsService.GetItem(model));
         }
 
-        public IActionResult SubmitUpdate(ShopItem model, string shopId)
+        public IActionResult SubmitUpdate(ShopItem model, string shopId, string oldShopId)
         {
-            
             try
             {
                 _itemsService.SubmitDataAndUpdateDb(model, shopId, true);
-                Shop goBack = _shopService.GetShopFromId(shopId);
-                return RedirectToAction("GoToShop", goBack);
+                Shop redirect = _shopService.GetShopFromId(oldShopId);
+                return RedirectToAction("GoToShop", redirect);
             }
             catch
             {
