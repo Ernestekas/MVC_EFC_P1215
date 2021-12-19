@@ -22,33 +22,30 @@ namespace ShopApp.Services
 
         public void SubmitDataAndUpdateDb(ShopItem model, string shopId, bool updatingCurrentData = false)
         {
+            Shop shop = new Shop();
             ShopItem selected = model;
-            Shop shop = _context.Shops.FirstOrDefault(s => s.Id == int.Parse(shopId));
 
             if (updatingCurrentData)
             {
-                selected = _context.ShopItems.FirstOrDefault(m => m.Id == selected.Id);
+                shop = _context.Shops.FirstOrDefault(x => x.Id == int.Parse(shopId));
+
+                selected = _context.ShopItems.Include(i => i.Shop).FirstOrDefault(m => m.Id == model.Id);
+                selected.Shop = shop;
                 selected.Name = model.Name;
             }
-
-            if(string.IsNullOrWhiteSpace(selected.Name) || (updatingCurrentData && shop == null))
+            else if(!string.IsNullOrWhiteSpace(shopId))
             {
-                throw new Exception();
-            }
-            
-            if(shop != null)
-            {
+                shop = _context.Shops.FirstOrDefault(x => x.Id == int.Parse(shopId));
                 selected.Shop = shop;
             }
-            
-            if(!updatingCurrentData)
+
+            if (!updatingCurrentData)
             {
                 _context.ShopItems.Add(selected);
             }
             else
             {
-                _context.Attach(selected);
-                _context.Entry(selected).State = EntityState.Modified;
+                _context.Update(selected);
             }
             _context.SaveChanges();
         }
@@ -61,6 +58,14 @@ namespace ShopApp.Services
         public void DeleteItem(ShopItem model)
         {
             _context.ShopItems.Remove(model);
+            _context.SaveChanges();
+        }
+
+        public void DeleteAllItemsFromShop(Shop model)
+        {
+            Shop selected = _context.Shops.Include(s => s.ShopItems).FirstOrDefault(s => s.Id == model.Id);
+            List<ShopItem> items = selected.ShopItems;
+            _context.RemoveRange(items);
             _context.SaveChanges();
         }
     }

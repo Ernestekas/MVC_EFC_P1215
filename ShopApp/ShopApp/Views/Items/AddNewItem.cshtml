@@ -10,9 +10,16 @@
     @using (Html.BeginForm("SubmitNewItem", "Items", FormMethod.Post))
     {
     <tr>
-        <td>@Html.TextBoxFor(c => c.Name)</td>
+        <td>@Html.TextBoxFor(i => i.Name)</td>
         <td>@Html.TextBoxFor(c => c.ExpiryDate)</td>
-        <td><input type="number" name="shopId"/></td>
+        @if(@Model.Shop != null)
+        {
+            <td><input type="number" name="shopId" value="@Model.Shop.Id"/></td>
+        }
+        else
+        {
+            <td><input type="number" name="shopId" value=""/></td>  
+        }
         <td><input type = "submit" value = "submit" /></td>
     </tr>
     }

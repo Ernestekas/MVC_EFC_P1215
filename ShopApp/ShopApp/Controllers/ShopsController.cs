@@ -23,9 +23,23 @@ namespace ShopApp.Controllers
             return View(_shopService.GetAllShops());
         }
 
-        public IActionResult AddNewShop()
+        public IActionResult AddNewShop(Shop model = null)
         {
-            return View();
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult SubmitNewShop(Shop model)
+        {
+            try
+            {
+                _shopService.CreateNewShop(model);
+                return RedirectToAction("AllShops");
+            }
+            catch
+            {
+                return RedirectToAction("AddNewShop", model);
+            }
         }
 
         public IActionResult GoToShop(Shop model)
@@ -50,7 +64,32 @@ namespace ShopApp.Controllers
             {
                 return RedirectToAction("UpdateItem", model);
             }
-            
         }
+
+        public IActionResult DeleteShop(Shop model)
+        {
+            _itemsService.DeleteAllItemsFromShop(model);
+            _shopService.DeleteShop(model);
+            return RedirectToAction("AllShops");
+        }
+
+        public IActionResult UpdateShop(Shop model)
+        {
+            return View(model);
+        }
+
+        public IActionResult SubmitUpdateShop(Shop model)
+        {
+            try
+            {
+                _shopService.UpdateShop(model);
+                return RedirectToAction("GoToShop", model);
+            }
+            catch
+            {
+                return RedirectToAction("UpdateShop", model);
+            }
+        }
+
     }
 }

@@ -2,11 +2,13 @@
 
 <table class="table">
     <tr>
+        <th>Id</th>
         <th>Shop</th>
     </tr>
     @foreach(var shop in @Model)
     {
         <tr>
+            <td>@shop.Id</td>
             <td>@Html.ActionLink(@shop.Name, "GoToShop", "Shops", shop)</td>
         </tr>
     }

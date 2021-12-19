@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopApp.Data;
 
 namespace ShopApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211217203441_Name")]
+    partial class Name
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,15 +28,24 @@ namespace ShopApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Shops");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Robotukai"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Kojinės ir aš"
+                        });
                 });
 
             modelBuilder.Entity("ShopApp.Models.ShopItem", b =>
@@ -61,6 +72,43 @@ namespace ShopApp.Migrations
                     b.HasIndex("ShopId");
 
                     b.ToTable("ShopItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ExpiryDate = new DateTime(2021, 12, 17, 20, 34, 40, 999, DateTimeKind.Utc).AddTicks(2852),
+                            IsDeleted = false,
+                            Name = "Tiristorius"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ExpiryDate = new DateTime(2021, 12, 17, 20, 34, 40, 999, DateTimeKind.Utc).AddTicks(4084),
+                            IsDeleted = false,
+                            Name = "Transformatorius"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ExpiryDate = new DateTime(2021, 12, 17, 20, 34, 40, 999, DateTimeKind.Utc).AddTicks(4098),
+                            IsDeleted = false,
+                            Name = "Mėlynos kojinės"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ExpiryDate = new DateTime(2021, 12, 17, 20, 34, 40, 999, DateTimeKind.Utc).AddTicks(4102),
+                            IsDeleted = false,
+                            Name = "Raudonos kojinės-pirštinės"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ExpiryDate = new DateTime(2021, 12, 17, 20, 34, 40, 999, DateTimeKind.Utc).AddTicks(4104),
+                            IsDeleted = false,
+                            Name = "Permatomos kojinės"
+                        });
                 });
 
             modelBuilder.Entity("ShopApp.Models.ShopItem", b =>

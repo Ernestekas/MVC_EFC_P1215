@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopApp.Models;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopApp.Data
 {
@@ -16,44 +18,36 @@ namespace ShopApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Shop>().HasData(
-                new Shop()
-                {
-                    Id = 1,
-                    Name = "Robotukai"
-                },
-                 new Shop()
-                 {
-                     Id = 2,
-                     Name = "Kojinės ir aš"
-                 });
+            base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ShopItem>().HasData(
-                new ShopItem()
+            modelBuilder.Entity<ShopItem>().Property<bool>("IsDeleted");
+            modelBuilder.Entity<ShopItem>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+
+            modelBuilder.Entity<Shop>().Property<bool>("IsDeleted");
+            modelBuilder.Entity<Shop>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+        }
+
+        public override int SaveChanges()
+        {
+            UpdateSoftDeleteStatuses();
+            return base.SaveChanges();
+        }
+
+        private void UpdateSoftDeleteStatuses()
+        {
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                switch (entry.State)
                 {
-                    Id = 1,
-                    Name = "Tiristorius"
-                },
-                new ShopItem()
-                {
-                    Id = 2,
-                    Name = "Transformatorius"
-                },
-                new ShopItem()
-                {
-                    Id = 3,
-                    Name = "Mėlynos kojinės"
-                },
-                new ShopItem()
-                {
-                    Id = 4,
-                    Name = "Raudonos kojinės-pirštinės"
-                },
-                new ShopItem()
-                {
-                    Id = 5,
-                    Name = "Permatomos kojinės"
-                });
+                    case EntityState.Added:
+                        entry.CurrentValues["IsDeleted"] = false;
+                        break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Modified;
+                        entry.CurrentValues["IsDeleted"] = true;
+                        break;
+                }
+            }
         }
     }
 }

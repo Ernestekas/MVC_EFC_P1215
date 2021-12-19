@@ -2,12 +2,14 @@
 
 <table>
     <tr>
+        <th>Id</th>
         <th>Name</th>
     </tr>
 </table>
-@using (Html.BeginForm("SubmitNewShop", "Shops", FormMethod.Post))
+@using (Html.BeginForm("SubmitUpdateShop", "Shops", FormMethod.Post))
 {
     <tr>
+        <td>@Html.TextBoxFor(s => s.Id, new {@readonly = "readonly"})</td>
         <td>@Html.TextBoxFor(s => s.Name)</td>
     </tr>
     
