@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopApp.GenRep;
 using ShopApp.Models;
 using ShopApp.Services;
 
@@ -8,15 +9,20 @@ namespace ShopApp.Controllers
     {
         private readonly ItemsService _itemsService;
         private readonly ShopService _shopService;
-        public ItemsController(ItemsService itemsService, ShopService shopService)
+        private IGenericRepo<ShopItem> _repository;
+        public ItemsController(ItemsService itemsService, ShopService shopService, IGenericRepo<ShopItem> repository)
         {
             _itemsService = itemsService;
             _shopService = shopService;
+            _repository = repository;
+
         }
 
         public IActionResult AllItems()
         {
-            return View(_itemsService.GetAllItems());
+            var model = _repository.GetAll();   // Generic Repository testing.
+            return View(model);                 // Generic Repository testing.
+            //return View(_itemsService.GetAllItems());
         }
 
         public IActionResult AddNewItem(Shop shopModel)
