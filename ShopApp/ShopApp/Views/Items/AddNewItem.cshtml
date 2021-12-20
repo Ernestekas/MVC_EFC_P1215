@@ -11,7 +11,7 @@
     {
     <tr>
         <td>@Html.TextBoxFor(i => i.Name)</td>
-        <td>@Html.TextBoxFor(c => c.ExpiryDate)</td>
+        <td>@Html.TextBoxFor(i => i.ExpiryDate)</td>
         @if(@Model.Shop != null)
         {
             <td><input type="number" name="shopId" value="@Model.Shop.Id"/></td>

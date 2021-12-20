@@ -31,6 +31,7 @@ namespace ShopApp.Controllers
         [HttpPost]
         public IActionResult SubmitNewShop(Shop model)
         {
+            var test = ModelState;
             try
             {
                 _shopService.CreateNewShop(model);
