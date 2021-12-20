@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopApp.Models;
 using ShopApp.Services;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ShopApp.Controllers
 {
@@ -30,10 +32,26 @@ namespace ShopApp.Controllers
             return View(emptyModel);
         }
 
+        public IActionResult AddNewItem_Test()
+        {
+            return View(new ShopItem());
+        }
+
+        public IActionResult SubmitNewItem_Test(ShopItem model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return RedirectToAction("AddNewItem_Test");
+            }
+            return RedirectToAction("AllItems");
+        }
         [HttpPost]
         public IActionResult SubmitNewItem(ShopItem model, string shopId)
         {
-            // Modelstate always return true. Even when model gets empty name. 
+            if(!ModelState.IsValid)
+            {
+
+            }
             try
             {
                 if(!string.IsNullOrWhiteSpace(shopId))

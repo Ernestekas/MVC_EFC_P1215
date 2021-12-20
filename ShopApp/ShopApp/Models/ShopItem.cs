@@ -11,7 +11,8 @@ namespace ShopApp.Models
         public int Id { get; set; }
 
         [DisplayName("Name")]
-        [MinLength(2, ErrorMessage = "Name must be at least 2 characters long.")]
+        [Required(AllowEmptyStrings = false)]
+        [StringLength(20, MinimumLength = 5)]
         public string Name { get; set; }
 
         [DisplayName("Expiry Date")]

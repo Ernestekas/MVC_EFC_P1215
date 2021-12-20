@@ -9,18 +9,19 @@
     </tr>
     @using (Html.BeginForm("SubmitNewItem", "Items", FormMethod.Post))
     {
-    <tr>
-        <td>@Html.TextBoxFor(i => i.Name)</td>
-        <td>@Html.TextBoxFor(i => i.ExpiryDate)</td>
-        @if(@Model.Shop != null)
-        {
-            <td><input type="number" name="shopId" value="@Model.Shop.Id"/></td>
-        }
-        else
-        {
-            <td><input type="number" name="shopId" value=""/></td>  
-        }
-        <td><input type = "submit" value = "submit" /></td>
-    </tr>
+        @Html.ValidationSummary()
+        <tr>
+            <td>@Html.TextBoxFor(i => i.Name) @Html.ValidationMessageFor(i => i.Name)</td>
+            <td>@Html.TextBoxFor(i => i.ExpiryDate)</td>
+            @if(@Model.Shop != null)
+            {
+                <td><input type="number" name="shopId" value="@Model.Shop.Id"/></td>
+            }
+            else
+            {
+                <td><input type="number" name="shopId" value=""/></td>  
+            }
+            <td><input type = "submit" value = "submit" /></td>
+        </tr>
     }
 </table>

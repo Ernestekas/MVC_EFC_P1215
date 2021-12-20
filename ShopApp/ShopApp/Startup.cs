@@ -30,6 +30,7 @@ namespace ShopApp
             services.AddDbContext<DataContext>(d => d.UseSqlServer(defaultConnection));
             services.AddTransient<ShopService>();
             services.AddTransient<ItemsService>();
+            services.AddMvc();
             services.AddControllersWithViews();
         }
 
