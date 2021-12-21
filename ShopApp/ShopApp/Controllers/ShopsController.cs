@@ -23,6 +23,23 @@ namespace ShopApp.Controllers
             return View(_shopService.GetAllShops());
         }
 
+        public IActionResult Add()
+        {
+            return View(new Shop());
+        }
+
+        [HttpPost]
+        public IActionResult Add(Shop model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            _shopService.Create(model);
+            return RedirectToAction(nameof(AllShops));
+        }
+
         public IActionResult AddNewShop(Shop model = null)
         {
             return View(model);

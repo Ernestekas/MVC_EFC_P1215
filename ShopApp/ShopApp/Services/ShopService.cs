@@ -20,6 +20,11 @@ namespace ShopApp.Services
             return _context.Shops.ToList();
         }
 
+        public void Create(Shop shop)
+        {
+            _context.Shops.Add(shop);
+            _context.SaveChanges();
+        }
         // Optimization in proccess.
         public Shop GetById(int shopId)
         {

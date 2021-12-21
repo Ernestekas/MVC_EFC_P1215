@@ -20,12 +20,8 @@ namespace ShopApp.Services
             return _context.ShopItems.Include(x => x.Shop).ToList();
         }
 
-        // OPTIMIZATION in progress.
         public void CreateOrUpdate(ShopItem model, Shop shop, bool updating = false)
         {
-            // Create new item.
-            // Stage 1: Add only item. +
-            // Stage 2: Add shop to item. +
             ShopItem item = model;
 
             if (updating)
@@ -39,7 +35,6 @@ namespace ShopApp.Services
             if (shop != null)
             {
                 item.Shop = shop;
-                //item.Shop = _context.Shops.FirstOrDefault(s => s.Id == shop.Id);
             }
 
             if (updating && shop == null)
@@ -102,12 +97,6 @@ namespace ShopApp.Services
         public ShopItem GetItem(ShopItem model)
         {
             return _context.ShopItems.Include(s => s.Shop).FirstOrDefault(m => m.Id == model.Id);
-        }
-
-        public void DeleteItem(ShopItem model)
-        {
-            _context.ShopItems.Remove(model);
-            _context.SaveChanges();
         }
 
         public void DeleteAllItemsFromShop(Shop model)

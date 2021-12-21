@@ -24,13 +24,11 @@ namespace ShopApp.Controllers
             return View(model);
         }
 
-        // OPTIMIZATION
         public IActionResult Add()
         {
             return View(new ShopItem());
         }
 
-        // OPTIMIZATION
         [HttpPost]
         public IActionResult Add(ShopItem model, int shopId)
         {
@@ -45,14 +43,12 @@ namespace ShopApp.Controllers
             return RedirectToAction(nameof(AllItems));
         }
 
-        // OPTIMIZATION
         public IActionResult Update(ShopItem model)
         {
             ShopItem item = _itemsService.GetFromDb(model);
             return View(item);
         }
 
-        // OPTIMIZATION
         [HttpPost]
         public IActionResult Update(ShopItem model, int shopId)
         {
@@ -76,90 +72,12 @@ namespace ShopApp.Controllers
             }
         }
 
-        // OPTIMIZATION
         [HttpPost]
         public IActionResult Delete(ShopItem model)
         {
             _itemsService.Delete(model);
 
             return RedirectToAction(nameof(AllItems));
-        }
-
-        public IActionResult AddNewItem_Obsolete(Shop shopModel)
-        {
-            ShopItem emptyModel = new ShopItem();
-            if (shopModel.Name != null)
-            {
-                ModelState.Clear();
-                emptyModel.Shop = _shopService.GetShop(shopModel);
-            }
-            return View(emptyModel);
-        }
-
-        [HttpPost]
-        public IActionResult SubmitNewItem_Obsolete(ShopItem model, string shopId)
-        {
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(shopId))
-                {
-                    _shopService.CheckIfShopExists(shopId);
-                }
-
-                _itemsService.SubmitDataAndUpdateDb(model, shopId);
-
-                if (!string.IsNullOrWhiteSpace(shopId))
-                {
-                    return RedirectToAction("GoToShop", "Shops", _shopService.GetShopFromId(shopId));
-                }
-                return RedirectToAction("AllItems");
-            }
-            catch
-            {
-                return RedirectToAction("AddNewItem", model);
-            }
-        }
-        // Validacijos testavimas. Pradžia.
-        public IActionResult AddNewItem_Test(ShopItem model)
-        {
-            return View(model);
-        }
-        
-        public IActionResult SubmitNewItem_Test(ShopItem model)
-        {
-            if(!ModelState.IsValid)
-            {
-                return RedirectToAction("AddNewItem_Test", model);
-            }
-
-            return RedirectToAction("AllItems");
-        }
-        // Validacijos testavimas. Pabaiga.
-
-        
-        public IActionResult UpdateItem_Obsolete(ShopItem model)
-        {
-            return View(_itemsService.GetItem(model));
-        }
-
-        public IActionResult SubmitUpdate_Obsolete(ShopItem model, string shopId)
-        {
-            try
-            {
-                _shopService.CheckIfShopExists(shopId);
-                _itemsService.SubmitDataAndUpdateDb(model, shopId, true);
-                return RedirectToAction("AllItems");
-            }
-            catch
-            {
-                return RedirectToAction("UpdateItem", model);
-            }
-        }
-
-        public IActionResult DeleteItem_Obsolete(ShopItem model)
-        {
-            _itemsService.DeleteItem(model);
-            return RedirectToAction("AllItems");
         }
     }
 }
