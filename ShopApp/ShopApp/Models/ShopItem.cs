@@ -11,8 +11,8 @@ namespace ShopApp.Models
         public int Id { get; set; }
 
         [DisplayName("Name")]
-        [Required(AllowEmptyStrings = false)]
-        [StringLength(20, MinimumLength = 5)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Name field is required.")]
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "Name must be at least 5 character long.")]
         public string Name { get; set; }
 
         [DisplayName("Expiry Date")]

@@ -9,9 +9,8 @@
     </tr>
     @using (Html.BeginForm("SubmitNewItem", "Items", FormMethod.Post))
     {
-        @Html.ValidationSummary()
         <tr>
-            <td>@Html.TextBoxFor(i => i.Name) @Html.ValidationMessageFor(i => i.Name)</td>
+            <td>@Html.TextBoxFor(i => i.Name)</td>
             <td>@Html.TextBoxFor(i => i.ExpiryDate)</td>
             @if(@Model.Shop != null)
             {
@@ -24,4 +23,7 @@
             <td><input type = "submit" value = "submit" /></td>
         </tr>
     }
+    <tr>
+        <th>@Html.ValidationSummary()</th>
+    </tr>
 </table>

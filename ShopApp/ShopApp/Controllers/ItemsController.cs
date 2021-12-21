@@ -32,36 +32,32 @@ namespace ShopApp.Controllers
             return View(emptyModel);
         }
 
-        public IActionResult AddNewItem_Test()
+        public IActionResult AddNewItem_Test(ShopItem model)
         {
-            return View(new ShopItem());
+            return View(model);
         }
 
         public IActionResult SubmitNewItem_Test(ShopItem model)
         {
             if(!ModelState.IsValid)
             {
-                return RedirectToAction("AddNewItem_Test");
+                return RedirectToAction("AddNewItem_Test", model);
             }
             return RedirectToAction("AllItems");
         }
         [HttpPost]
         public IActionResult SubmitNewItem(ShopItem model, string shopId)
         {
-            if(!ModelState.IsValid)
-            {
-
-            }
             try
             {
-                if(!string.IsNullOrWhiteSpace(shopId))
+                if (!string.IsNullOrWhiteSpace(shopId))
                 {
                     _shopService.CheckIfShopExists(shopId);
                 }
 
                 _itemsService.SubmitDataAndUpdateDb(model, shopId);
 
-                if(!string.IsNullOrWhiteSpace(shopId))
+                if (!string.IsNullOrWhiteSpace(shopId))
                 {
                     return RedirectToAction("GoToShop", "Shops", _shopService.GetShopFromId(shopId));
                 }
