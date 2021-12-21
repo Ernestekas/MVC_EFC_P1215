@@ -21,17 +21,20 @@ namespace ShopApp.Controllers
             return View(_itemsService.GetAllItems());
         }
 
-        public IActionResult AddNewItem(Shop shopModel)
+        //public IActionResult AddNewItem(Shop shopModel)
+        //{
+        //    ShopItem emptyModel = new ShopItem();
+        //    if (shopModel.Name != null)
+        //    {
+        //        ModelState.Clear(); // Be šito kai užkrauna View item name textbox rodo ne tuščia item name, bet shop name.
+        //        emptyModel.Shop = _shopService.GetShop(shopModel);
+        //    }
+        //    return View(emptyModel);
+        //}
+        public IActionResult AddNewItem(ShopItem model)
         {
-            ShopItem emptyModel = new ShopItem();
-            if (shopModel.Name != null)
-            {
-                ModelState.Clear(); // Be šito kai užkrauna View item name textbox rodo ne tuščia item name, bet shop name.
-                emptyModel.Shop = _shopService.GetShop(shopModel);
-            }
-            return View(emptyModel);
+            return View(model);
         }
-
         public IActionResult AddNewItem_Test(ShopItem model)
         {
             return View(model);
