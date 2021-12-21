@@ -20,6 +20,12 @@ namespace ShopApp.Services
             return _context.Shops.ToList();
         }
 
+        // Optimization in proccess.
+        public Shop GetById(int shopId)
+        {
+            return _context.Shops.Include(s => s.ShopItems).FirstOrDefault(s => s.Id == shopId);
+        }
+
         public Shop GetShop(Shop model)
         {
             return _context.Shops.Include(s => s.ShopItems).FirstOrDefault(s => s.Id == model.Id);

@@ -20,6 +20,51 @@ namespace ShopApp.Services
             return _context.ShopItems.Include(x => x.Shop).ToList();
         }
 
+        // OPTIMIZATION in progress.
+        public void CreateOrUpdate(ShopItem model, Shop shop, bool updating = false)
+        {
+            // Create new item.
+            // Stage 1: Add only item. +
+            // Stage 2: Add shop to item. +
+            ShopItem item = model;
+
+            if (updating)
+            {
+                item = _context.ShopItems.Include(i => i.Shop).FirstOrDefault(i => i.Id == model.Id);
+
+                item.Name = model.Name;
+                item.ExpiryDate = model.ExpiryDate;
+            }
+
+            if (shop != null)
+            {
+                item.Shop = shop;
+                //item.Shop = _context.Shops.FirstOrDefault(s => s.Id == shop.Id);
+            }
+
+            if (updating && shop == null)
+            {
+                throw new Exception();
+            }
+
+            if (updating)
+            {
+                _context.Update(item);
+            }
+            else
+            {
+                _context.ShopItems.Add(item);
+            }
+
+            _context.SaveChanges();
+        }
+
+        public void Delete(ShopItem shop)
+        {
+            _context.ShopItems.Remove(shop);
+            _context.SaveChanges();
+        }
+
         public void SubmitDataAndUpdateDb(ShopItem model, string shopId, bool updatingCurrentData = false)
         {
             Shop shop = new Shop();
@@ -50,6 +95,10 @@ namespace ShopApp.Services
             _context.SaveChanges();
         }
 
+        public ShopItem GetFromDb(ShopItem model)
+        {
+            return _context.ShopItems.Include(s => s.Shop).FirstOrDefault(m => m.Id == model.Id);
+        }
         public ShopItem GetItem(ShopItem model)
         {
             return _context.ShopItems.Include(s => s.Shop).FirstOrDefault(m => m.Id == model.Id);
