@@ -36,7 +36,12 @@ namespace ShopApp.Services
 
         public void Delete(Shop shop)
         {
-            _context.Shops.Remove(shop);
+            shop = GetShop(shop);
+
+            _context.ShopItems.RemoveRange(shop.ShopItems);
+            _context.SaveChanges();
+            _context.Remove(shop);
+            _context.SaveChanges();
         }
         // Optimization in proccess.
         public Shop GetById(int shopId)

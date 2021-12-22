@@ -45,8 +45,33 @@ namespace ShopApp.Controllers
 
         public IActionResult AddFromShop(Shop model)
         {
-            ShopItem emptyItem = new ShopItem() { Shop = model };
+            ModelState.Clear();
+            ShopItem emptyItem = new ShopItem() { Name="", Shop = model };
+            return View(emptyItem);
+        }
 
+        [HttpPost]
+        public IActionResult AddFromShop(ShopItem model, int shopId)
+        {
+            model.Id = 0;
+            Shop shop = _shopService.GetById(shopId);
+            if (!ModelState.IsValid)
+            {
+                model.Shop = shop;
+                return View(model);
+            }
+
+            try
+            {
+                _itemsService.CreateOrUpdate(model, shop);
+                return RedirectToAction("ToShop", "Shops", shop);
+            }
+            catch
+            {
+                shop = new Shop() { Id = shopId };
+                ModelState.AddModelError("shopId", "There is no such shop.");
+                return View(model);
+            }
         }
 
         public IActionResult Update(ShopItem model)

@@ -66,7 +66,6 @@ namespace ShopApp.Controllers
 
         public IActionResult Delete(Shop model)
         {
-            _itemsService.DeleteAllByShop(model);
             _shopService.Delete(model);
             return RedirectToAction(nameof(AllShops));
         }

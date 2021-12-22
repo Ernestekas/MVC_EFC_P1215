@@ -27,7 +27,6 @@ namespace ShopApp.Services
             if (updating)
             {
                 item = _context.ShopItems.Include(i => i.Shop).FirstOrDefault(i => i.Id == model.Id);
-
                 item.Name = model.Name;
                 item.ExpiryDate = model.ExpiryDate;
             }
@@ -106,7 +105,9 @@ namespace ShopApp.Services
 
         public void DeleteAllByShop(Shop shop)
         {
-            _context.ShopItems.RemoveRange(GetAllByShop(shop).ToArray());
+            Shop selected = _context.Shops.Include(s => s.ShopItems).FirstOrDefault(s => s.Id == shop.Id);
+            List<ShopItem> items = selected.ShopItems;
+            _context.RemoveRange(items);
             _context.SaveChanges();
         }
         public void DeleteAllItemsFromShop(Shop model)
