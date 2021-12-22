@@ -93,29 +93,10 @@ namespace ShopApp.Services
         {
             return _context.ShopItems.Include(s => s.Shop).FirstOrDefault(m => m.Id == model.Id);
         }
-        public ShopItem GetItem(ShopItem model)
-        {
-            return _context.ShopItems.Include(s => s.Shop).FirstOrDefault(m => m.Id == model.Id);
-        }
 
         public List<ShopItem> GetAllByShop(Shop shop)
         {
             return _context.ShopItems.Include(i => i.Shop).Where(i => i.Shop.Id == shop.Id).ToList();
-        }
-
-        public void DeleteAllByShop(Shop shop)
-        {
-            Shop selected = _context.Shops.Include(s => s.ShopItems).FirstOrDefault(s => s.Id == shop.Id);
-            List<ShopItem> items = selected.ShopItems;
-            _context.RemoveRange(items);
-            _context.SaveChanges();
-        }
-        public void DeleteAllItemsFromShop(Shop model)
-        {
-            Shop selected = _context.Shops.Include(s => s.ShopItems).FirstOrDefault(s => s.Id == model.Id);
-            List<ShopItem> items = selected.ShopItems;
-            _context.RemoveRange(items);
-            _context.SaveChanges();
         }
     }
 }
