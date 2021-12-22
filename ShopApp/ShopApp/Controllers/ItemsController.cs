@@ -43,6 +43,12 @@ namespace ShopApp.Controllers
             return RedirectToAction(nameof(AllItems));
         }
 
+        public IActionResult AddFromShop(Shop model)
+        {
+            ShopItem emptyItem = new ShopItem() { Shop = model };
+
+        }
+
         public IActionResult Update(ShopItem model)
         {
             ShopItem item = _itemsService.GetFromDb(model);
@@ -68,6 +74,39 @@ namespace ShopApp.Controllers
             catch
             {
                 ModelState.AddModelError("shopId", "There is no such shop.");
+                return View(model);
+            }
+        }
+
+        public IActionResult UpdateFromShop(ShopItem model)
+        {
+            ShopItem item = _itemsService.GetFromDb(model);
+            ViewBag.RedirectToShop = item.Shop.Id;
+
+            return View(item);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateFromShop(ShopItem model, int shopId, int redirectToShop)
+        {
+            if(!ModelState.IsValid)
+            {
+                model.Shop = new Shop() { Id = shopId };
+                return View(model);
+            }
+
+            try
+            {
+                Shop shop = _shopService.GetById(shopId);
+                Shop redirect = _shopService.GetById(redirectToShop);
+
+                _itemsService.CreateOrUpdate(model, shop, true);
+                return RedirectToAction("ToShop", "Shops", redirect);
+            }
+            catch
+            {
+                ModelState.AddModelError("shopId", "There is no such shop.");
+                ViewBag.RedirectToShop = redirectToShop;
                 return View(model);
             }
         }

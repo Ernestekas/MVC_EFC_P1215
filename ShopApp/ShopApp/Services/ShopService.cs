@@ -20,10 +20,23 @@ namespace ShopApp.Services
             return _context.Shops.ToList();
         }
 
-        public void Create(Shop shop)
+        public void CreateOrUpdate(Shop shop, bool update = false)
         {
+            if(update)
+            {
+                Shop selected = GetById(shop.Id);
+                selected.Name = shop.Name;
+                _context.Update(selected);
+                return;
+            }
+
             _context.Shops.Add(shop);
             _context.SaveChanges();
+        }
+
+        public void Delete(Shop shop)
+        {
+            _context.Shops.Remove(shop);
         }
         // Optimization in proccess.
         public Shop GetById(int shopId)

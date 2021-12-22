@@ -99,6 +99,16 @@ namespace ShopApp.Services
             return _context.ShopItems.Include(s => s.Shop).FirstOrDefault(m => m.Id == model.Id);
         }
 
+        public List<ShopItem> GetAllByShop(Shop shop)
+        {
+            return _context.ShopItems.Include(i => i.Shop).Where(i => i.Shop.Id == shop.Id).ToList();
+        }
+
+        public void DeleteAllByShop(Shop shop)
+        {
+            _context.ShopItems.RemoveRange(GetAllByShop(shop).ToArray());
+            _context.SaveChanges();
+        }
         public void DeleteAllItemsFromShop(Shop model)
         {
             Shop selected = _context.Shops.Include(s => s.ShopItems).FirstOrDefault(s => s.Id == model.Id);

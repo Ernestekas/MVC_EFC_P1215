@@ -1,0 +1,26 @@
+﻿@model Shop
+
+<h1>@Model.Name</h1>
+@Html.ActionLink("Delete", "Delete", "Shops", @Model, new {@class="btn btn-danger"})
+@Html.ActionLink("Update", "Update", "Shops", new {shopId = @Model.Id }, new {@class="btn btn-info"})
+<h2>All shop items @Html.ActionLink("Add new item", "AddFromShop", "Items", @Model, new {@class="btn btn-info"})</h2>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Expiry date</th>
+        <th>Actions</th>
+    </tr>
+    @foreach(var item in @Model.ShopItems)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.ExpiryDate</td>
+            <td>@Html.ActionLink("Delete", "Delete", "Items", item) | 
+                @Html.ActionLink("Update", "UpdateFromShop", "Items", item)
+            </td>
+        </tr>
+    }
+</table>
