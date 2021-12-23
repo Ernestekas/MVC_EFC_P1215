@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopApp.Dtos;
 using ShopApp.Models;
 using ShopApp.Services;
 using System.Collections.Generic;
@@ -9,10 +10,13 @@ namespace ShopApp.Controllers
     {
         private readonly ItemsService _itemsService;
         private readonly ShopService _shopService;
-        public ItemsController(ItemsService itemsService, ShopService shopService)
+        private readonly TagsService _tagsService;
+
+        public ItemsController(ItemsService itemsService, ShopService shopService, TagsService tagsService)
         {
             _itemsService = itemsService;
             _shopService = shopService;
+            _tagsService = tagsService;
         }
 
         public IActionResult AllItems()
@@ -20,6 +24,12 @@ namespace ShopApp.Controllers
             List<ShopItem> model = _itemsService.GetAllItems();
 
             return View(model);
+        }
+
+        public IActionResult Add_InProgress()
+        {
+            CreateItem itemVM = new CreateItem() { Tags = _tagsService.GetAll()};
+            return View(itemVM);
         }
 
         public IActionResult Add()

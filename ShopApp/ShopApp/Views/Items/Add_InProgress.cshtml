@@ -1,0 +1,29 @@
+﻿@model ShopApp.Dtos.CreateItem
+
+@using (Html.BeginForm("Add_InProgress", "Items", FormMethod.Post))
+{
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Expiry Date</th>
+            <th>Shop Id</th>
+            <th>Action</th>
+        </tr>
+    
+            <tr>
+                <td>@Html.TextBoxFor(i => i.Name)</td>
+                <td>@Html.TextBoxFor(i => i.ExpiryDate)</td>
+                <td>@Html.TextBoxFor(i => i.ShopId)</td>
+                <td><input type="submit" value="Submit"/></td>
+            </tr>
+    </table>
+    <table>
+        <tr>
+            <th>Tags</th>
+        </tr>
+        <tr>
+            <td>@Html.ListBoxFor(i => i.SelectedTagsIds, new SelectList(@Model.Tags, "Id", "Name"))</td>
+        </tr>
+    </table>
+    @Html.ValidationSummary(false)
+}
