@@ -15,11 +15,12 @@ namespace ShopApp.Services
             _context = context;
         }
 
-        public List<ShopItem> GetAllItems()
+        public List<ShopItem> GetAllItems() //Remove name from method
         {
             return _context.ShopItems.Include(x => x.Shop).ToList();
         }
 
+        //Separate create or update
         public void CreateOrUpdate(ShopItem model, Shop shop, bool updating = false)
         {
             ShopItem item = model;
@@ -38,7 +39,7 @@ namespace ShopApp.Services
 
             if (updating && shop == null)
             {
-                throw new Exception();
+                throw new Exception(); //This is not good exception to throw
             }
 
             if (updating)
@@ -59,44 +60,15 @@ namespace ShopApp.Services
             _context.SaveChanges();
         }
 
-        public void SubmitDataAndUpdateDb(ShopItem model, string shopId, bool updatingCurrentData = false)
-        {
-            Shop shop = new Shop();
-            ShopItem selected = model;
-
-            if (updatingCurrentData)
-            {
-                shop = _context.Shops.FirstOrDefault(x => x.Id == int.Parse(shopId));
-
-                selected = _context.ShopItems.Include(i => i.Shop).FirstOrDefault(m => m.Id == model.Id);
-                selected.Shop = shop;
-                selected.Name = model.Name;
-            }
-            else if(!string.IsNullOrWhiteSpace(shopId))
-            {
-                shop = _context.Shops.FirstOrDefault(x => x.Id == int.Parse(shopId));
-                selected.Shop = shop;
-            }
-
-            if (!updatingCurrentData)
-            {
-                _context.ShopItems.Add(selected);
-            }
-            else
-            {
-                _context.Update(selected);
-            }
-            _context.SaveChanges();
-        }
-
+        //Method names should beconsistent
         public ShopItem GetFromDb(ShopItem model)
         {
             return _context.ShopItems.Include(s => s.Shop).FirstOrDefault(m => m.Id == model.Id);
         }
 
-        public List<ShopItem> GetAllByShop(Shop shop)
+        public List<ShopItem> GetAllByShopId(int shopId)
         {
-            return _context.ShopItems.Include(i => i.Shop).Where(i => i.Shop.Id == shop.Id).ToList();
+            return _context.ShopItems.Include(i => i.Shop).Where(i => i.Shop.Id == shopId).ToList();
         }
     }
 }

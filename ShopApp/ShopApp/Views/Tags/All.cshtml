@@ -1,16 +1,19 @@
-﻿@model ShopApp.Dtos.AllTagsViewModel
+﻿@model ShopApp.Dtos.DisplayTags
 
-<table>
+<table class="table">
     <tr>
+        <th>No.</th>
         <th>Name</th>
+        <th>Actions</th>
     </tr>
-    @if(@Model.TagsNames.Count > 0)
+    @for(int i = 1; i <= @Model.Tags.Count; i++)
     {
-        @foreach(var tag in @Model.TagsNames)
-        {
-            <tr>
-                <td>@tag</td>
-            </tr>
-        }
+        <tr>
+            <td>@i</td>
+            <td>@Model.Tags[i - 1].Name</td>
+            <td>@Html.ActionLink("Update", "Update", "Tags", new {@tagId = @Model.Tags[i - 1].Id}) |
+                @Html.ActionLink("Delete", "Delete", "Tags", new {@tagId = @Model.Tags[i - 1].Id})
+            </td>
+        </tr>
     }
 </table>

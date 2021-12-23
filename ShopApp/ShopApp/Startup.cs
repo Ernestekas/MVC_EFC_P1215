@@ -31,6 +31,7 @@ namespace ShopApp
             services.AddTransient<ShopService>();
             services.AddTransient<ItemsService>();
             services.AddTransient<TagsService>();
+            services.AddTransient<ValidationService>();
             services.AddMvc();
             services.AddControllersWithViews();
         }

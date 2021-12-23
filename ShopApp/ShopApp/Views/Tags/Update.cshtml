@@ -1,6 +1,6 @@
-﻿@model ShopApp.Dtos.CreateTag
+﻿@model Tag
 
-@using (Html.BeginForm("Add", "Tags", FormMethod.Post))
+@using (Html.BeginForm("Update", "Tags", FormMethod.Post))
 {
     <table>
         <tr>
@@ -9,6 +9,7 @@
         </tr>
         <tr>
             <td>@Html.TextBoxFor(t => t.Name)</td>
+            <td>@Html.HiddenFor(t => t.Id)</td>
             <td><input type = "submit" value = "submit" /></td>
         </tr>
     </table>

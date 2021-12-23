@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopApp.Models;
 using ShopApp.Services;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 
 namespace ShopApp.Controllers
