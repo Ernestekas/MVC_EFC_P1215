@@ -1,0 +1,16 @@
+﻿@model ShopApp.Dtos.AllTagsViewModel
+
+<table>
+    <tr>
+        <th>Name</th>
+    </tr>
+    @if(@Model.TagsNames.Count > 0)
+    {
+        @foreach(var tag in @Model.TagsNames)
+        {
+            <tr>
+                <td>@tag</td>
+            </tr>
+        }
+    }
+</table>
