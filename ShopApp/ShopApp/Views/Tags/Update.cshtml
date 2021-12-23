@@ -1,0 +1,17 @@
+﻿@model Tag
+
+@using (Html.BeginForm("Update", "Tags", FormMethod.Post))
+{
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>@Html.TextBoxFor(t => t.Name)</td>
+            <td>@Html.HiddenFor(t => t.Id)</td>
+            <td><input type = "submit" value = "submit" /></td>
+        </tr>
+    </table>
+}
+@Html.ValidationSummary(false)

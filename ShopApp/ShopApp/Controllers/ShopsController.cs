@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShopApp.Data;
 using ShopApp.Models;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using ShopApp.Services;
 
 namespace ShopApp.Controllers
@@ -20,7 +16,7 @@ namespace ShopApp.Controllers
 
         public IActionResult AllShops()
         {
-            return View(_shopService.GetAllShops());
+            return View(_shopService.GetAll());
         }
 
         public IActionResult Add()
@@ -42,7 +38,7 @@ namespace ShopApp.Controllers
 
         public IActionResult ToShop(Shop model)
         {
-            model.ShopItems = _itemsService.GetAllByShop(model);
+            model.ShopItems = _itemsService.GetAllByShopId(model.Id);
             return View(model);
         }
 

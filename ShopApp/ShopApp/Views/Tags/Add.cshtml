@@ -1,0 +1,16 @@
+﻿@model ShopApp.Dtos.CreateTag
+
+@using (Html.BeginForm("Add", "Tags", FormMethod.Post))
+{
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>@Html.TextBoxFor(t => t.Name)</td>
+            <td><input type = "submit" value = "submit" /></td>
+        </tr>
+    </table>
+}
+@Html.ValidationSummary(false)

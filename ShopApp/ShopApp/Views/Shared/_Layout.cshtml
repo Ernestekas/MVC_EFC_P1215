@@ -16,19 +16,41 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Items" asp-action="AllItems">All Items</a>
+                            <div class="btn-group">
+                                  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Items
+                                  </button>
+                                  <div class="dropdown-menu">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Items" asp-action="AllItems">All Items</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Items" asp-action="Add">Add New Item</a>
+                                  </div>
+                            </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Shops" asp-action="AllShops">All Shops</a>
+                            <div class="btn-group">
+                                  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Shops
+                                  </button>
+                                  <div class="dropdown-menu">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Shops" asp-action="AllShops">All Shops</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Shops" asp-action="Add">Add New Shop</a>
+                                  </div>
+                            </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Items" asp-action="Add">Add New Item</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Shops" asp-action="Add">Add New Shop</a>
+                            <div class="btn-group">
+                                  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Tags
+                                  </button>
+                                  <div class="dropdown-menu">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Tags" asp-action="All">All Tags</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Tags" asp-action="Add">Add New Tag</a>
+                                  </div>
+                            </div>
                         </li>
                     </ul>
                 </div>

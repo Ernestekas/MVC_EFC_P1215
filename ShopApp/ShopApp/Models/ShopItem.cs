@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,7 +20,8 @@ namespace ShopApp.Models
         public DateTime ExpiryDate { get; set; } = DateTime.UtcNow;
 
         [DisplayName("Shop")]
-        public Shop? Shop { get; set; }
+        public Shop Shop { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public List<ShopItemTag> ShopItemTags { get; set; }
     }
 }

@@ -10,6 +10,8 @@ namespace ShopApp.Data
         public DbSet<Shop> Shops { get; set; }
 
         public DbSet<ShopItem> ShopItems { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<ShopItemTag> ShopItemTags { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
@@ -18,6 +20,9 @@ namespace ShopApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ShopItemTag>()
+            .HasKey(bc => new { bc.TagId, bc.ShopItemId});
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ShopItem>().Property<bool>("IsDeleted");
@@ -25,6 +30,9 @@ namespace ShopApp.Data
 
             modelBuilder.Entity<Shop>().Property<bool>("IsDeleted");
             modelBuilder.Entity<Shop>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+
+            modelBuilder.Entity<Tag>().Property<bool>("IsDeleted");
+            modelBuilder.Entity<Tag>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
         }
 
         public override int SaveChanges()
