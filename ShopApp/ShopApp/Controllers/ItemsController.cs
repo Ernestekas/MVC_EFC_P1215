@@ -39,8 +39,30 @@ namespace ShopApp.Controllers
 
         public IActionResult All_InProgress()
         {
-            
-            return View();
+            List<DisplayItem> itemsVM = new List<DisplayItem>();
+            foreach(var item in _itemsService.GetAll())
+            {
+                List<int> tagsIds = _shopItemTagsService.GetTagsByItemId(item.Id);
+                List<Tag> tags = _tagsService.GetByIdList(tagsIds);
+
+                DisplayItem itemVM = new DisplayItem()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    ExpiryDate = item.ExpiryDate,
+                    ItemTags = string.Join(", ", tags.Select(t => t.Name))
+                };
+
+                if(item.Shop != null)
+                {
+                    itemVM.ShopId = item.Shop.Id;
+                    itemVM.ShopName = item.Shop.Name;
+                }
+
+                itemsVM.Add(itemVM);
+            }
+
+            return View(itemsVM);
         }
 
         public IActionResult Add_InProgress()
@@ -69,8 +91,12 @@ namespace ShopApp.Controllers
             }
 
             _itemsService.Create(item);
+
+            item.Id = _itemsService.GetByName(item.Name).Id;
+
+            _shopItemTagsService.Create(item.Id, itemVM.SelectedTagsIds);
             
-            return View(nameof(All));
+            return View(nameof(All_InProgress));
         }
 
         public IActionResult Add()
@@ -131,6 +157,15 @@ namespace ShopApp.Controllers
             }
         }
 
+        public IActionResult Update_InProgress(DisplayItem itemVM)
+        {
+            List<int> tagsIds = _shopItemTagsService.GetTagsByItemId(itemVM.Id);
+            List<Tag> tags = _tagsService.GetByIdList(tagsIds);
+
+            itemVM.ItemTags = string.Join(", ", tags);
+
+            return View(itemVM);
+        }
         public IActionResult Update(ShopItem model)
         {
             ShopItem item = _itemsService.GetFromDb(model);

@@ -1,4 +1,4 @@
-﻿@model List<ShopItem>
+﻿@model List<ShopApp.Dtos.Items.DisplayItem>
 
 <table class="table">
     <tr>
@@ -16,16 +16,25 @@
             <td>@item.Id</td>
             <td>@item.Name</td>
             <td>@item.ExpiryDate</td>
-            @if(@item.Shop == null)
+            @if(string.IsNullOrWhiteSpace(item.ShopName))
             {
                 <td>N/A</td>
             }
             else
             {
-                <td>@item.Shop.Name</td>
+                <td>@item.ShopName</td>
             }
-            <td>@Html.ActionLink("Delete", "DeleteItem", "Items", item) |
-                @Html.ActionLink("Update", "Update", "Items", item)</td>
+            @if(!string.IsNullOrWhiteSpace(item.ItemTags))
+            {
+                <td>@item.ItemTags</td>
+            }
+            else
+            {
+                <td>N/A</td>
+            }
+            <td>@Html.ActionLink("Delete", "Delete_InProgress", "Items", item) |
+                @Html.ActionLink("Update", "Update_InProgress", "Items", item)</td>
+            
         </tr>
     }
 </table>

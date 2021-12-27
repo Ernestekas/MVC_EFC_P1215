@@ -46,7 +46,11 @@ namespace ShopApp.Services
 
         public List<Tag> GetByIdList(List<int> tagsIds)
         {
-            List<Tag> result = GetAll().Where(t => tagsIds.All(i => t.Id == i)).ToList();
+            List<Tag> result = new List<Tag>();
+            foreach(var tagId in tagsIds)
+            {
+                result.Add(GetById(tagId));
+            }
 
             return result;
         }

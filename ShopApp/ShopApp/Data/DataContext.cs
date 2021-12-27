@@ -33,6 +33,9 @@ namespace ShopApp.Data
 
             modelBuilder.Entity<Tag>().Property<bool>("IsDeleted");
             modelBuilder.Entity<Tag>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+
+            modelBuilder.Entity<ShopItemTag>().Property<bool>("IsDeleted");
+            modelBuilder.Entity<ShopItemTag>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
         }
 
         public override int SaveChanges()

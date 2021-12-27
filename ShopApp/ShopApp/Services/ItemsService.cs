@@ -75,5 +75,10 @@ namespace ShopApp.Services
         {
             return _context.ShopItems.Include(i => i.Shop).Where(i => i.Shop.Id == shopId).ToList();
         }
+
+        public ShopItem GetByName(string name)
+        {
+            return GetAll().FirstOrDefault(i => i.Name == name);
+        }
     }
 }

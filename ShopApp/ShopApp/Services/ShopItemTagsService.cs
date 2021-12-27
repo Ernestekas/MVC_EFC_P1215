@@ -33,5 +33,15 @@ namespace ShopApp.Services
             _context.ShopItemTags.AddRange(itemTags);
             _context.SaveChanges();
         }
+
+        public List<ShopItemTag> GetAll()
+        {
+            return _context.ShopItemTags.ToList();
+        }
+
+        public List<int> GetTagsByItemId(int itemId)
+        {
+            return GetAll().Where(i => i.ShopItemId == itemId).Select(x => x.TagId).ToList();
+        }
     }
 }
