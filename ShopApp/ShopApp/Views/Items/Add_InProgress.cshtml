@@ -13,7 +13,7 @@
             <tr>
                 <td>@Html.TextBoxFor(i => i.Name)</td>
                 <td>@Html.TextBoxFor(i => i.ExpiryDate)</td>
-                <td>@Html.TextBoxFor(i => i.ShopId)</td>
+                <td>@Html.TextBoxFor(i => i.ShopId, new {@type="number" })</td>
                 <td><input type="submit" value="Submit"/></td>
             </tr>
     </table>

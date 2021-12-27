@@ -26,7 +26,10 @@ namespace ShopApp.Services
 
         public void Update(Tag tag)
         {
-            _context.Tags.Update(tag);
+            Tag updated = GetById(tag.Id);
+            updated.Name = tag.Name;
+
+            _context.Tags.Update(updated);
             _context.SaveChanges();
         }
 
@@ -39,6 +42,13 @@ namespace ShopApp.Services
         public Tag GetById(int tagId)
         {
             return _context.Tags.SingleOrDefault(t => t.Id == tagId);
+        }
+
+        public List<Tag> GetByIdList(List<int> tagsIds)
+        {
+            List<Tag> result = GetAll().Where(t => tagsIds.All(i => t.Id == i)).ToList();
+
+            return result;
         }
     }
 }

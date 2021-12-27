@@ -63,7 +63,15 @@ namespace ShopApp.Controllers
         [HttpPost]
         public ActionResult Update(Tag tag)
         {
-            if(!ModelState.IsValid)
+            List<object> allTags = _tagsService.GetAll().OfType<object>().ToList();
+            bool uniqueTagName = _validationService.IsUnique(tag, allTags, "Name");
+
+            if (!uniqueTagName)
+            {
+                ModelState.AddModelError("Name", "Tag with this name already exists.");
+            }
+
+            if (!ModelState.IsValid)
             {
                 return View(tag);
             }

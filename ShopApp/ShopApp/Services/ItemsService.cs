@@ -15,11 +15,16 @@ namespace ShopApp.Services
             _context = context;
         }
 
-        public List<ShopItem> GetAllItems() //Remove name from method
+        public List<ShopItem> GetAll() //Remove name from method
         {
             return _context.ShopItems.Include(x => x.Shop).ToList();
         }
 
+        public void Create(ShopItem item)
+        {
+            _context.ShopItems.Add(item);
+            _context.SaveChanges();
+        }
         //Separate create or update
         public void CreateOrUpdate(ShopItem model, Shop shop, bool updating = false)
         {

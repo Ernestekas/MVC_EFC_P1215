@@ -32,6 +32,7 @@ namespace ShopApp
             services.AddTransient<ItemsService>();
             services.AddTransient<TagsService>();
             services.AddTransient<ValidationService>();
+            services.AddTransient<ShopItemTagsService>();
             services.AddMvc();
             services.AddControllersWithViews();
         }
@@ -60,7 +61,7 @@ namespace ShopApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Items}/{action=AllItems}/{id?}");
+                    pattern: "{controller=Items}/{action=All}/{id?}");
             });
         }
     }

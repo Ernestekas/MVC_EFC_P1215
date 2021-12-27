@@ -11,5 +11,17 @@ namespace ShopApp.Dtos
         public int ShopId { get; set; }
         public List<Tag> Tags { get; set; }
         public List<int> SelectedTagsIds { get; set; }
+
+        public ShopItem GetItem(Shop shop)
+        {
+            ShopItem result = new ShopItem()
+            {
+                Name = this.Name,
+                ExpiryDate = this.ExpiryDate,
+                Shop = shop
+            };
+
+            return result;
+        }
     }
 }

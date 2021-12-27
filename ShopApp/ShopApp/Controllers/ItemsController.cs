@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopApp.Dtos;
+using ShopApp.Dtos.Items;
 using ShopApp.Models;
 using ShopApp.Services;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ShopApp.Controllers
 {
@@ -11,19 +13,34 @@ namespace ShopApp.Controllers
         private readonly ItemsService _itemsService;
         private readonly ShopService _shopService;
         private readonly TagsService _tagsService;
+        private readonly ValidationService _validationService;
+        private readonly ShopItemTagsService _shopItemTagsService;
 
-        public ItemsController(ItemsService itemsService, ShopService shopService, TagsService tagsService)
+        public ItemsController
+            (ItemsService itemsService
+            , ShopService shopService
+            , TagsService tagsService
+            , ValidationService validationService
+            , ShopItemTagsService shopItemTagsService)
         {
             _itemsService = itemsService;
             _shopService = shopService;
             _tagsService = tagsService;
+            _validationService = validationService;
+            _shopItemTagsService = shopItemTagsService;
         }
 
-        public IActionResult AllItems()
+        public IActionResult All()
         {
-            List<ShopItem> model = _itemsService.GetAllItems();
+            List<ShopItem> model = _itemsService.GetAll();
 
             return View(model);
+        }
+
+        public IActionResult All_InProgress()
+        {
+            
+            return View();
         }
 
         public IActionResult Add_InProgress()
@@ -32,23 +49,55 @@ namespace ShopApp.Controllers
             return View(itemVM);
         }
 
+        [HttpPost]
+        public IActionResult Add_InProgress(CreateItem itemVM)
+        {
+            ShopItem item = itemVM.GetItem(_shopService.GetById(itemVM.ShopId));
+            List<object> items = _itemsService.GetAll().OfType<object>().ToList();
+            bool uniqueItemName = _validationService.IsUnique(item, items, "Name");
+
+            TryValidateModel(item);
+            if (!uniqueItemName)
+            {
+                ModelState.AddModelError("Name", "Item with this name already exists.");
+            }
+
+            if(!ModelState.IsValid)
+            {
+                itemVM.Tags = _tagsService.GetAll();
+                return View(itemVM);
+            }
+
+            _itemsService.Create(item);
+            
+            return View(nameof(All));
+        }
+
         public IActionResult Add()
         {
             return View(new ShopItem());
         }
 
         [HttpPost]
-        public IActionResult Add(ShopItem model, int shopId)
+        public IActionResult Add(ShopItem item, int shopId)
         {
+            List<object> items = _itemsService.GetAll().OfType<object>().ToList();
+            bool uniqueItemName = _validationService.IsUnique(item, items, "Name");
+
+            if(!uniqueItemName)
+            {
+                ModelState.AddModelError("Name", "Item with this name already exists.");
+            }
+
             if(!ModelState.IsValid)
             {
-                return View(model);
+                return View(item);
             }
 
             Shop shop = _shopService.GetById(shopId);
-            _itemsService.CreateOrUpdate(model, shop);
+            _itemsService.CreateOrUpdate(item, shop);
 
-            return RedirectToAction(nameof(AllItems));
+            return RedirectToAction(nameof(All));
         }
 
         public IActionResult AddFromShop(Shop model)
@@ -102,7 +151,7 @@ namespace ShopApp.Controllers
                 Shop shop = _shopService.GetById(shopId);
                 _itemsService.CreateOrUpdate(model, shop, true);
 
-                return RedirectToAction(nameof(AllItems));
+                return RedirectToAction(nameof(All));
             }
             catch
             {
@@ -149,7 +198,7 @@ namespace ShopApp.Controllers
         {
             _itemsService.Delete(model);
 
-            return RedirectToAction(nameof(AllItems));
+            return RedirectToAction(nameof(All));
         }
     }
 }
