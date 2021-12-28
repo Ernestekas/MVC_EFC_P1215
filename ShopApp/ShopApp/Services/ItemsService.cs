@@ -25,6 +25,12 @@ namespace ShopApp.Services
             _context.ShopItems.Add(item);
             _context.SaveChanges();
         }
+
+        public void Update(ShopItem item)
+        {
+            _context.ShopItems.Update(item);
+            _context.SaveChanges();
+        }
         //Separate create or update
         public void CreateOrUpdate(ShopItem model, Shop shop, bool updating = false)
         {
@@ -71,6 +77,10 @@ namespace ShopApp.Services
             return _context.ShopItems.Include(s => s.Shop).FirstOrDefault(m => m.Id == model.Id);
         }
 
+        public ShopItem GetById(int itemId)
+        {
+            return _context.ShopItems.Include(s => s.Shop).FirstOrDefault(m => m.Id == itemId);
+        }
         public List<ShopItem> GetAllByShopId(int shopId)
         {
             return _context.ShopItems.Include(i => i.Shop).Where(i => i.Shop.Id == shopId).ToList();

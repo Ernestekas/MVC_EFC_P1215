@@ -11,8 +11,10 @@ namespace ShopApp.Services
         {
             bool result = true;
             PropertyInfo property = objectToCompare.GetType().GetProperty(nameOfPropertyToCheck);
+            PropertyInfo idProperty = objectToCompare.GetType().GetProperty("Id");
+            var targetObjectValue = property.GetValue(objectToCompare, null);
 
-            if(allObjects.Count > 0)
+            if (allObjects.Count > 0)
             {
                 CheckObjectsMaches(objectToCompare, allObjects[0]);
             }
@@ -20,9 +22,9 @@ namespace ShopApp.Services
             foreach(var obj in allObjects)
             {
                 var compareToValue = property.GetValue(obj, null);
-                var targetObjectValue = property.GetValue(objectToCompare, null);
-
-                if(compareToValue.Equals(targetObjectValue))
+                
+                if(compareToValue.Equals(targetObjectValue) 
+                    && !idProperty.GetValue(objectToCompare, null).Equals(idProperty.GetValue(obj, null)))
                 {
                     result = false;
                     break;

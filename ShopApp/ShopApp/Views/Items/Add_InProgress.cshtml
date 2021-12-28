@@ -21,6 +21,7 @@
             <th>Tags</th>
         </tr>
         <tr>
+            @*How to set default selected values?*@
             <td>@Html.ListBoxFor(i => i.SelectedTagsIds, new SelectList(@Model.Tags, "Id", "Name"))</td>
         </tr>
     </table>

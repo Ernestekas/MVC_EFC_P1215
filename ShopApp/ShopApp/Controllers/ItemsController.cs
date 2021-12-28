@@ -45,13 +45,7 @@ namespace ShopApp.Controllers
                 List<int> tagsIds = _shopItemTagsService.GetTagsByItemId(item.Id);
                 List<Tag> tags = _tagsService.GetByIdList(tagsIds);
 
-                DisplayItem itemVM = new DisplayItem()
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    ExpiryDate = item.ExpiryDate,
-                    ItemTags = string.Join(", ", tags.Select(t => t.Name))
-                };
+                DisplayItem itemVM = new DisplayItem(item, tags);
 
                 if(item.Shop != null)
                 {
@@ -96,7 +90,7 @@ namespace ShopApp.Controllers
 
             _shopItemTagsService.Create(item.Id, itemVM.SelectedTagsIds);
             
-            return View(nameof(All_InProgress));
+            return RedirectToAction(nameof(All_InProgress));
         }
 
         public IActionResult Add()
@@ -164,8 +158,44 @@ namespace ShopApp.Controllers
 
             itemVM.ItemTags = string.Join(", ", tags);
 
-            return View(itemVM);
+            UpdateItem itemUpdateVM = new UpdateItem(itemVM)
+            {
+                Tags = _tagsService.GetAll()
+            };
+
+            return View(itemUpdateVM);
         }
+
+        [HttpPost]
+        public IActionResult Update_InProgress(UpdateItem itemVM)
+        {
+            ShopItem item = _itemsService.GetById(itemVM.Id);
+            item.Name = itemVM.Name;
+            item.ExpiryDate = itemVM.ExpiryDate;
+            item.Shop = _shopService.GetById(itemVM.ShopId);
+            bool uniqueName = _validationService.IsUnique(item, _itemsService.GetAll().OfType<object>().ToList(), "Name");
+
+            TryValidateModel(item);
+            if(!uniqueName)
+            {
+                ModelState.AddModelError("Name", "Item with this name already exists.");
+            }
+
+            if(!ModelState.IsValid)
+            {
+                List<int> tagsIds = _shopItemTagsService.GetTagsByItemId(item.Id);
+                List<Tag> tags = _tagsService.GetByIdList(tagsIds);
+
+                DisplayItem errorItemVM = new DisplayItem(item, tags);
+
+                return View(errorItemVM);
+            }
+
+            _itemsService.Update(item);
+
+            return RedirectToAction(nameof(All_InProgress));
+        }
+
         public IActionResult Update(ShopItem model)
         {
             ShopItem item = _itemsService.GetFromDb(model);

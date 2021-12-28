@@ -1,4 +1,4 @@
-﻿@model ShopApp.Dtos.Items.DisplayItem
+﻿@model ShopApp.Dtos.Items.UpdateItem
 
 @using (Html.BeginForm("Update_InProgress", "Items", FormMethod.Post))
 {
@@ -30,6 +30,14 @@
                 <td>@Html.TextBoxFor(s => s.ShopId, new { @type = "number", @value = 0 })</td>
             }
             <td><input type="submit" value="Update"/></td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th>Tags</th>
+        </tr>
+        <tr>
+            <td>@Html.ListBoxFor(i => i.SelectedTagsIds, new SelectList(@Model.Tags, "Id", "Name"))</td>
         </tr>
     </table>
 
