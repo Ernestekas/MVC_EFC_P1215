@@ -87,6 +87,7 @@ namespace ShopApp.Controllers
         public ActionResult Delete(int tagId)
         {
             Tag delete = _tagsService.GetById(tagId);
+
             _shopItemTagsService.DeleteByTagId(tagId);
             _tagsService.Delete(delete);
 

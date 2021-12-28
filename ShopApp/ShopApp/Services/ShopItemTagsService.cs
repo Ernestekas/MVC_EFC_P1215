@@ -56,7 +56,7 @@ namespace ShopApp.Services
 
         public void DeleteByItemId(int itemId)
         {
-            string query = $"DELETE FROM dbo.ShopItemTags WHERE ItemId={itemId}";
+            string query = $"DELETE FROM dbo.ShopItemTags WHERE ShopItemId={itemId}";
             _connection.Query<ShopItemTagsService>(query);
         }
     }

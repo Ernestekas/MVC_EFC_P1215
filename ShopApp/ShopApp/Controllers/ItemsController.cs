@@ -192,6 +192,8 @@ namespace ShopApp.Controllers
             }
 
             _itemsService.Update(item);
+            _shopItemTagsService.DeleteByItemId(item.Id);
+            _shopItemTagsService.Create(item.Id, itemVM.SelectedTagsIds);
 
             return RedirectToAction(nameof(All_InProgress));
         }
@@ -261,6 +263,7 @@ namespace ShopApp.Controllers
         [HttpPost]
         public IActionResult Delete(ShopItem model)
         {
+            _shopItemTagsService.DeleteByItemId(model.Id);
             _itemsService.Delete(model);
 
             return RedirectToAction(nameof(All));

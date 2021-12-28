@@ -7,6 +7,7 @@ namespace ShopApp.Services
 {
     public class ValidationService
     {
+        
         public bool IsUnique(object objectToCompare, List<object> allObjects, string nameOfPropertyToCheck)
         {
             bool result = true;

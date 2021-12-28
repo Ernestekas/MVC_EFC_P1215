@@ -23,13 +23,15 @@ namespace ShopApp.Dtos.Items
 
         public UpdateItem(DisplayItem itemFromList)
         {
-            List<int> tagsIds = itemFromList.Tags.Select(t => t.Id).ToList();
+            if(itemFromList.Tags != null)
+            {
+                OldSelectedTagsIds = itemFromList.Tags.Select(t => t.Id).ToList();
+            }
 
             Id = itemFromList.Id;
             Name = itemFromList.Name;
             ExpiryDate = itemFromList.ExpiryDate;
             ShopId = itemFromList.ShopId;
-            OldSelectedTagsIds = tagsIds;
         }
         public ShopItem GetItem(Shop shop)
         {
