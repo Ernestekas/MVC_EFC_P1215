@@ -65,9 +65,9 @@ namespace ShopApp.Services
             _context.SaveChanges();
         }
 
-        public void Delete(ShopItem shop)
+        public void Delete(int itemId)
         {
-            _context.ShopItems.Remove(shop);
+            _context.ShopItems.Remove(GetById(itemId));
             _context.SaveChanges();
         }
 

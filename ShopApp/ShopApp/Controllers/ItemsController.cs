@@ -151,7 +151,7 @@ namespace ShopApp.Controllers
             }
         }
 
-        public IActionResult Update_InProgress(DisplayItem itemVM)
+        public IActionResult Update(DisplayItem itemVM)
         {
             List<int> tagsIds = _shopItemTagsService.GetTagsByItemId(itemVM.Id);
             List<Tag> tags = _tagsService.GetByIdList(tagsIds);
@@ -167,7 +167,7 @@ namespace ShopApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update_InProgress(UpdateItem itemVM)
+        public IActionResult Update(UpdateItem itemVM)
         {
             ShopItem item = _itemsService.GetById(itemVM.Id);
             item.Name = itemVM.Name;
@@ -260,11 +260,10 @@ namespace ShopApp.Controllers
             }
         }
 
-        [HttpPost]
-        public IActionResult Delete(ShopItem model)
+        public IActionResult Delete(DisplayItem item)
         {
-            _shopItemTagsService.DeleteByItemId(model.Id);
-            _itemsService.Delete(model);
+            _shopItemTagsService.DeleteByItemId(item.Id);
+            _itemsService.Delete(item.Id);
 
             return RedirectToAction(nameof(All));
         }
