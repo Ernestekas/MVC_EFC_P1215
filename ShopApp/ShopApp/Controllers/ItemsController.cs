@@ -30,14 +30,14 @@ namespace ShopApp.Controllers
             _shopItemTagsService = shopItemTagsService;
         }
 
+        //public IActionResult All()
+        //{
+        //    List<ShopItem> model = _itemsService.GetAll();
+
+        //    return View(model);
+        //}
+
         public IActionResult All()
-        {
-            List<ShopItem> model = _itemsService.GetAll();
-
-            return View(model);
-        }
-
-        public IActionResult All_InProgress()
         {
             List<DisplayItem> itemsVM = new List<DisplayItem>();
             foreach(var item in _itemsService.GetAll())
@@ -93,32 +93,32 @@ namespace ShopApp.Controllers
             return RedirectToAction(nameof(All_InProgress));
         }
 
-        public IActionResult Add()
-        {
-            return View(new ShopItem());
-        }
+        //public IActionResult Add()
+        //{
+        //    return View(new ShopItem());
+        //}
 
-        [HttpPost]
-        public IActionResult Add(ShopItem item, int shopId)
-        {
-            List<object> items = _itemsService.GetAll().OfType<object>().ToList();
-            bool uniqueItemName = _validationService.IsUnique(item, items, "Name");
+        //[HttpPost]
+        //public IActionResult Add(ShopItem item, int shopId)
+        //{
+        //    List<object> items = _itemsService.GetAll().OfType<object>().ToList();
+        //    bool uniqueItemName = _validationService.IsUnique(item, items, "Name");
 
-            if(!uniqueItemName)
-            {
-                ModelState.AddModelError("Name", "Item with this name already exists.");
-            }
+        //    if(!uniqueItemName)
+        //    {
+        //        ModelState.AddModelError("Name", "Item with this name already exists.");
+        //    }
 
-            if(!ModelState.IsValid)
-            {
-                return View(item);
-            }
+        //    if(!ModelState.IsValid)
+        //    {
+        //        return View(item);
+        //    }
 
-            Shop shop = _shopService.GetById(shopId);
-            _itemsService.CreateOrUpdate(item, shop);
+        //    Shop shop = _shopService.GetById(shopId);
+        //    _itemsService.CreateOrUpdate(item, shop);
 
-            return RedirectToAction(nameof(All));
-        }
+        //    return RedirectToAction(nameof(All));
+        //}
 
         public IActionResult AddFromShop(Shop model)
         {
@@ -198,34 +198,34 @@ namespace ShopApp.Controllers
             return RedirectToAction(nameof(All_InProgress));
         }
 
-        public IActionResult Update(ShopItem model)
-        {
-            ShopItem item = _itemsService.GetFromDb(model);
-            return View(item);
-        }
+        //public IActionResult Update(ShopItem model)
+        //{
+        //    ShopItem item = _itemsService.GetFromDb(model);
+        //    return View(item);
+        //}
 
-        [HttpPost]
-        public IActionResult Update(ShopItem model, int shopId)
-        {
-            if(!ModelState.IsValid)
-            {
-                model.Shop = new Shop() { Id = shopId };
-                return View(model);
-            }
+        //[HttpPost]
+        //public IActionResult Update(ShopItem model, int shopId)
+        //{
+        //    if(!ModelState.IsValid)
+        //    {
+        //        model.Shop = new Shop() { Id = shopId };
+        //        return View(model);
+        //    }
 
-            try
-            {
-                Shop shop = _shopService.GetById(shopId);
-                _itemsService.CreateOrUpdate(model, shop, true);
+        //    try
+        //    {
+        //        Shop shop = _shopService.GetById(shopId);
+        //        _itemsService.CreateOrUpdate(model, shop, true);
 
-                return RedirectToAction(nameof(All));
-            }
-            catch
-            {
-                ModelState.AddModelError("shopId", "There is no such shop.");
-                return View(model);
-            }
-        }
+        //        return RedirectToAction(nameof(All));
+        //    }
+        //    catch
+        //    {
+        //        ModelState.AddModelError("shopId", "There is no such shop.");
+        //        return View(model);
+        //    }
+        //}
 
         public IActionResult UpdateFromShop(ShopItem model)
         {
@@ -266,7 +266,7 @@ namespace ShopApp.Controllers
             _shopItemTagsService.DeleteByItemId(model.Id);
             _itemsService.Delete(model);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(All_InProgress));
         }
     }
 }

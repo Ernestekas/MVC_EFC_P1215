@@ -1,29 +1,29 @@
-﻿@model ShopItem
+﻿@model ShopApp.Dtos.CreateItem
 
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Expiry Date</th>
-        <th>Shop Id</th>
-        <th></th>
-    </tr>
-    @using (Html.BeginForm("Add", "Items", FormMethod.Post))
-    {
+@using (Html.BeginForm("Add_InProgress", "Items", FormMethod.Post))
+{
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Expiry Date</th>
+            <th>Shop Id</th>
+            <th>Action</th>
+        </tr>
         <tr>
             <td>@Html.TextBoxFor(i => i.Name)</td>
             <td>@Html.TextBoxFor(i => i.ExpiryDate)</td>
-            @if(@Model.Shop == null)
-            {
-                <td><input type="number" value="0" name="shopId" /></td>
-            }
-            else
-            {
-                <td><input type="number" value="@Model.Shop.Id" name="shopId" /></td>
-            }
-            <td><input type="submit" value="submit" /></td>
+            <td>@Html.TextBoxFor(i => i.ShopId, new {@type="number" })</td>
+            <td><input type="submit" value="Submit"/></td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th>Tags</th>
         </tr>
         <tr>
-            <td>@Html.ValidationMessageFor(i => i.Name)</td>
+            @*How to set default selected values?*@
+            <td>@Html.ListBoxFor(i => i.SelectedTagsIds, new SelectList(@Model.Tags, "Id", "Name"))</td>
         </tr>
-    }
-</table>
+    </table>
+    @Html.ValidationSummary(false)
+}

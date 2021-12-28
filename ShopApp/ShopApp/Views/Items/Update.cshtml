@@ -1,6 +1,6 @@
-﻿@model ShopApp.Models.ShopItem
+﻿@model ShopApp.Dtos.Items.UpdateItem
 
-@using (Html.BeginForm("Update", "Items", FormMethod.Post))
+@using (Html.BeginForm("Update_InProgress", "Items", FormMethod.Post))
 {
     <table class="table table-bordered">
         <tr>
@@ -16,21 +16,30 @@
             <td>@Html.TextBoxFor(s => s.ExpiryDate)</td>
             @if(@Model != null)
             {
-                @if(@Model.Shop != null)
+                @if(@Model.ShopId != 0)
                 {
-                    <td><input type="number" name="shopId" value="@Model.Shop.Id"/></td>
+                    <td>@Html.TextBoxFor(s => s.ShopId, new {@type="number" }) </td>
                 }
                 else
                 {
-                    <td><input type="number" name="shopId" value="0"/></td>
+                    <td>@Html.TextBoxFor(s => s.ShopId, new { @type = "number", @value = 0})</td>
                 }
             }
             else
             {
-                <td><input type="number" name="shopId" value="0"/></td>
+                <td>@Html.TextBoxFor(s => s.ShopId, new { @type = "number", @value = 0 })</td>
             }
             <td><input type="submit" value="Update"/></td>
         </tr>
     </table>
+    <table>
+        <tr>
+            <th>Tags</th>
+        </tr>
+        <tr>
+            <td>@Html.ListBoxFor(i => i.SelectedTagsIds, new SelectList(@Model.Tags, "Id", "Name"))</td>
+        </tr>
+    </table>
+
     @Html.ValidationSummary(false)
 }
