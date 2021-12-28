@@ -59,14 +59,14 @@ namespace ShopApp.Controllers
             return View(itemsVM);
         }
 
-        public IActionResult Add_InProgress()
+        public IActionResult Add()
         {
             CreateItem itemVM = new CreateItem() { Tags = _tagsService.GetAll()};
             return View(itemVM);
         }
 
         [HttpPost]
-        public IActionResult Add_InProgress(CreateItem itemVM)
+        public IActionResult Add(CreateItem itemVM)
         {
             ShopItem item = itemVM.GetItem(_shopService.GetById(itemVM.ShopId));
             List<object> items = _itemsService.GetAll().OfType<object>().ToList();
@@ -90,7 +90,7 @@ namespace ShopApp.Controllers
 
             _shopItemTagsService.Create(item.Id, itemVM.SelectedTagsIds);
             
-            return RedirectToAction(nameof(All_InProgress));
+            return RedirectToAction(nameof(All));
         }
 
         //public IActionResult Add()
@@ -195,7 +195,7 @@ namespace ShopApp.Controllers
             _shopItemTagsService.DeleteByItemId(item.Id);
             _shopItemTagsService.Create(item.Id, itemVM.SelectedTagsIds);
 
-            return RedirectToAction(nameof(All_InProgress));
+            return RedirectToAction(nameof(All));
         }
 
         //public IActionResult Update(ShopItem model)
@@ -266,7 +266,7 @@ namespace ShopApp.Controllers
             _shopItemTagsService.DeleteByItemId(model.Id);
             _itemsService.Delete(model);
 
-            return RedirectToAction(nameof(All_InProgress));
+            return RedirectToAction(nameof(All));
         }
     }
 }
