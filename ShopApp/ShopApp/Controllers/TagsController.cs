@@ -10,11 +10,15 @@ namespace ShopApp.Controllers
     public class TagsController : Controller
     {
         private readonly TagsService _tagsService;
+        private readonly ShopItemTagsService _shopItemTagsService;
         private readonly ValidationService _validationService;
 
-        public TagsController(TagsService tagsService, ValidationService validationService)
+        public TagsController(TagsService tagsService
+            , ShopItemTagsService shopItemTagsService
+            , ValidationService validationService)
         {
             _tagsService = tagsService;
+            _shopItemTagsService = shopItemTagsService;
             _validationService = validationService;
         }
 
@@ -83,6 +87,7 @@ namespace ShopApp.Controllers
         public ActionResult Delete(int tagId)
         {
             Tag delete = _tagsService.GetById(tagId);
+            _shopItemTagsService.DeleteByTagId(tagId);
             _tagsService.Delete(delete);
 
             return RedirectToAction(nameof(All));
